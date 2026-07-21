@@ -27,6 +27,12 @@ set(MATRIX_FILES
     src/system_stm32f4xx.c
     )
 
+set(LED_BLINK_FILES
+    src_led_blink/main.c
+    src_led_blink/stm32f4xx_led_blink_it.c
+    src/system_stm32f4xx.c
+    )
+
 # set(STARTUP_FILES
 #     startup_src/startup_stm32f40xx.S
 #     )
@@ -95,3 +101,28 @@ add_custom_target(flash
     COMMAND ${ST_FLASH} write F4Matrix.bin 0x08000000
     DEPENDS F4Matrix.bin
     )
+
+# Just for testing correct clock settings and LED blinking on NUCLEO-F429ZI board
+add_executable(F4LedBlink
+    ${LED_BLINK_FILES}
+    ${STARTUP_FILES}
+    ${STDPERIPH_FILES}
+)
+
+target_include_directories(F4LedBlink PRIVATE
+    src_led_blink
+    src
+    ${STM32F4_STDPERIPH_DRIVER_DIR}/inc
+    ${CMSIS_DIR}/Include
+    ${CMSIS_DIR}/Device/ST/STM32F4xx/Include
+)
+
+add_custom_target(F4LedBlink.bin ALL
+    COMMAND ${OBJCOPY} -S -O binary F4LedBlink F4LedBlink.bin
+    DEPENDS F4LedBlink
+)
+
+add_custom_target(flash_led_blink
+    COMMAND ${ST_FLASH} write F4LedBlink.bin 0x08000000
+    DEPENDS F4LedBlink.bin
+)
