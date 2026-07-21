@@ -69,7 +69,7 @@ unsigned int matrix_row;
 void matrix_next() {
 	//Actually show current data
 	//Strobe up
-	GPIO_CONTROL->BSRRL = GPIO_Pin_STB;
+	GPIO_CONTROL->BSRR = (uint32_t)GPIO_Pin_STB;
 	//Update curdata pointer
 	DMA2_Stream5->M0AR += FRAMEBUFFER_SHIFTLEN * sizeof(FRAMEBUFFER_TYPE);
 	//Set row, keep strobe up and output disabled
@@ -88,7 +88,7 @@ void matrix_next() {
 	TIM3->PSC >>= 1;
 
 	//Strobe down (deliberately quite far away from strobe up, give panels some time to respond)
-	GPIO_CONTROL->BSRRH = GPIO_Pin_STB;
+	GPIO_CONTROL->BSRR = (uint32_t)GPIO_Pin_STB << 16;
 	//Actually display what is already in the buffer
 	//Output is enabled over this loop, seeing as this will always take the same amount of time.
 	TIM3->CNT = 0; //Set counter to 0
