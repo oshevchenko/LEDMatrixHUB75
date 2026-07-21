@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder:LEDMatrixHUB75}/F4Matrix",
+    "cmake.buildDirectory": "${workspaceFolder:LEDMatrixHUB75}/F4Matrix/build",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+
+}
