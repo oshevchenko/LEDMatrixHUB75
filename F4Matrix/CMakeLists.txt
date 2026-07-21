@@ -60,6 +60,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb -mfp
 
 # add_definitions(-DSTM32F40_41xxx)
 # add_definitions(-DHSE_VALUE=80000000)
+
+# Set USE_HSE_BYPASS for NUCLEO-F429ZI board! ST-LINK supplies an external 8 MHz clock to PH0/PF0-OSC_IN pin.
+add_definitions(-DUSE_HSE_BYPASS)
+add_definitions(-DHSE_VALUE=8000000)
 add_definitions(-DSTM32F429_439xx)
 add_definitions(-DUSE_STDPERIPH_DRIVER)
 
