@@ -9,6 +9,7 @@
 #define TESTIMAGE_H_
 
 void testimage_init();
+void testimage_run();
 
 
 

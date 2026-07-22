@@ -40,11 +40,14 @@ int main(void)
 {
 	framebuffer_init();
 	colorcorr_init();
-	control_uart_init();
-	testimage_init();
+	// control_uart_init();
+	// testimage_init();
 	matrix_init();
-
-	control_uart_loop();
+  while (1)
+  {
+    testimage_run();
+  }
+	// control_uart_loop();
 	return 0;
 }
 

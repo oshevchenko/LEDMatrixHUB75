@@ -82,7 +82,7 @@ void matrix_next() {
 		matrix_row++;
 		if (matrix_row == MATRIX_PANEL_SCANROWS) {
 			matrix_row = 0;
-			DMA2_Stream5->M0AR = framebuffer_get();
+			DMA2_Stream5->M0AR = (uint32_t) framebuffer_get();
 		}
 	}
 	TIM3->PSC >>= 1;

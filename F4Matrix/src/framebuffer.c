@@ -47,11 +47,11 @@ void framebuffer_write(unsigned int offset, uint16_t value) {
 	unsigned int scanrow = y % MATRIX_PANEL_SCANROWS;
 	unsigned int bus = (y / MATRIX_PANEL_SCANROWS) % MATRIX_PANEL_BUSES;
 	//Every odd segment (line of panels) is inverted (snake-like configuration)
-	if (segment & 1) {
-		x = (MATRIX_WIDTH-1)-x;
-		scanrow = (MATRIX_PANEL_SCANROWS-1)-scanrow;
-		bus = (MATRIX_PANEL_BUSES-1)-bus;
-	}
+	// if (segment & 1) {
+	// 	x = (MATRIX_WIDTH-1)-x;
+	// 	scanrow = (MATRIX_PANEL_SCANROWS-1)-scanrow;
+	// 	bus = (MATRIX_PANEL_BUSES-1)-bus;
+	// }
 	offset = (scanrow * FRAMEBUFFER_ROWLEN) + ((MATRIX_PANELSH-1-segment) * MATRIX_PANELSW * MATRIX_PANEL_WIDTH * 2) + (x * 2);
 	FRAMEBUFFER_TYPE output = 1<<((bus*MATRIX_PANEL_CHANNELS) + channel);
 	FRAMEBUFFER_TYPE *ptr = &framebuffers[(framebuffer_writebuffer * FRAMEBUFFER_LEN)+offset];

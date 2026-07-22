@@ -10,22 +10,22 @@
 
 //Information about individual panels
 //How many pixels in width?
-#define MATRIX_PANEL_WIDTH			32
+#define MATRIX_PANEL_WIDTH			96
 //Number of scanrows. Should be a power of two.
 //The panels I use (16 pixels high) are 1/8th scan.
-#define MATRIX_PANEL_SCANROWS		8
+#define MATRIX_PANEL_SCANROWS		32
 //How many buses and channels there are on the panel. For example on mine there's R1 G1 B1, R2 G2 B2, which means 3 channels (RGB), 2 buses (1,2)
 #define MATRIX_PANEL_CHANNELS		3
 #define MATRIX_PANEL_BUSES			2
 
 //How many panels stuck together?
-#define MATRIX_PANELSW	3
-#define MATRIX_PANELSH	3
+#define MATRIX_PANELSW	1
+#define MATRIX_PANELSH	2
 
 //Output stuff
-#define FRAMEBUFFER_MAXBITDEPTH			11
+#define FRAMEBUFFER_MAXBITDEPTH			4
 #define FRAMEBUFFER_BUFFERS				2
-#define MATRIX_MINIMUM_DISPLAY_TIME		50
+#define MATRIX_MINIMUM_DISPLAY_TIME		200
 
 //Gamma & color correction
 #define COLORCORR_GAMMA_MIN				1.0
@@ -41,7 +41,7 @@
 #define GPIO_CONTROL		GPIOE
 #define GPIO_CONTROL_CLOCKCMD(x) 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, x)
 //Pins to use on control GPIO
-#define GPIO_CONTROL_RowShift	2 // 2,3,4,5 for 16 scanrows, 2,3,4 for 8
+#define GPIO_CONTROL_RowShift	1 // 2,3,4,5 for 16 scanrows, 2,3,4 for 8
 #define GPIO_Pin_STB			GPIO_Pin_6
 
 //Calculated, don't change this!
