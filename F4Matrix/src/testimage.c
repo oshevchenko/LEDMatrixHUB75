@@ -9,40 +9,52 @@
 #include "colorcorr.h"
 
 void testimage_set(unsigned int x, unsigned int y, uint8_t r, uint8_t g, uint8_t b) {
-	unsigned int offset=(x + (y*MATRIX_WIDTH))*3;
+	unsigned int offset;
+	if (y >=32 && y < 64) {
+		y+=32;
+	} else if (y >= 64 && y < 96) {
+		y-=32;
+	}
+	offset=(x + (y*MATRIX_WIDTH))*3;
 	framebuffer_write(offset,colorcorr_lookup(r));
 	framebuffer_write(offset+1,colorcorr_lookup(b));
 	framebuffer_write(offset+2,colorcorr_lookup(g));
 }
 
 void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
-	unsigned int offset=(x + (y*MATRIX_WIDTH))*3;
+	unsigned int offset;
+	if (y >=32 && y < 64) {
+		y+=32;
+	} else if (y >= 64 && y < 96) {
+		y-=32;
+	}
+	offset=(x + (y*MATRIX_WIDTH))*3;
 	framebuffer_write(offset,colorcorr_lookup(rgb[0]));
 	framebuffer_write(offset+1,colorcorr_lookup(rgb[2]));
 	framebuffer_write(offset+2,colorcorr_lookup(rgb[1]));
 }
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
+uint8_t topcolors[]={
+	255,255,0,
+	0,255,255,
+	0,255,0,
+	255,0,255,
+	255,0,0,
+	0,0,255,
+	255,255,0,
+};
+uint8_t barcolors[]={
+	0,0,255,
+	0,0,0,
+	255,0,255,
+	0,0,0,
+	0,255,255,
+	0,0,0,
+	255,255,255
+};
 
 void testimage_init() {
-	uint8_t topcolors[]={
-		255,255,255,
-		255,255,0,
-		0,255,255,
-		0,255,0,
-		255,0,255,
-		255,0,0,
-		0,0,255
-	};
-	uint8_t barcolors[]={
-		0,0,255,
-		0,0,0,
-		255,0,255,
-		0,0,0,
-		0,255,255,
-		0,0,0,
-		255,255,255
-	};
 	unsigned int x,y;
 	for (x=0; x<MATRIX_WIDTH; x++) {
 		for (y=0; y<MATRIX_HEIGHT; y++) {
@@ -58,6 +70,37 @@ void testimage_init() {
 				unsigned int c = seg-9;
 				testimage_set(x,y,(c == 0 || c == 3)?v:0,(c == 1 || c == 3)?v:0,(c == 2 || c == 3)?v:0);
 			}
+		}
+	}
+	framebuffer_swap();
+}
+
+void testimage_run() {
+	static unsigned int x_white=0;
+	static unsigned int y_white=0;
+	static unsigned int y_treshold=0;
+	static unsigned int j=0;
+	unsigned int x,y;
+	for (x=0; x<MATRIX_WIDTH; x++) {
+		for (y=0; y<MATRIX_HEIGHT; y++) {
+			testimage_set(x,y,0,0,0);
+		}
+	}
+	for (y=0; y<MATRIX_HEIGHT; y++) {
+		for (x=0; x<MATRIX_WIDTH; x++) {
+			// testimage_set(x,y,0,255,0);
+			testimage_setb(x,y,&topcolors[j*3]);
+		}
+		if (y == y_white) {
+			break;
+		}
+	}
+	y_white+=8;
+	if (y_white >= MATRIX_HEIGHT) {
+		y_white=0;
+		j++;
+		if (j >= (sizeof(topcolors)/sizeof(topcolors[0]))/3) {
+			j=0;
 		}
 	}
 	framebuffer_swap();
