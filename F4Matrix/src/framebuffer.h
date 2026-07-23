@@ -25,6 +25,9 @@
 
 void framebuffer_init();
 void framebuffer_write(unsigned int offset, uint16_t value);
+void framebuffer_write_table(unsigned int offset, uint16_t value_r, uint16_t value_g, uint16_t value_b);
+void framebuffer_clean();
+
 FRAMEBUFFER_TYPE *framebuffer_get();
 void framebuffer_swap();
 void framebuffer_sync();

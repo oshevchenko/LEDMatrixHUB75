@@ -7,6 +7,8 @@
 
 #include "framebuffer.h"
 #include "colorcorr.h"
+// #define OLD_TESTIMAGE_SET
+#ifdef OLD_TESTIMAGE_SET
 
 void testimage_set(unsigned int x, unsigned int y, uint8_t r, uint8_t g, uint8_t b) {
 	unsigned int offset;
@@ -33,7 +35,30 @@ void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
 	framebuffer_write(offset+1,colorcorr_lookup(rgb[2]));
 	framebuffer_write(offset+2,colorcorr_lookup(rgb[1]));
 }
+#else
+void testimage_set(unsigned int x, unsigned int y, uint8_t r, uint8_t g, uint8_t b) {
+	unsigned int offset;
+	if (y >=32 && y < 64) {
+		y+=32;
+	} else if (y >= 64 && y < 96) {
+		y-=32;
+	}
+	offset=x + (y*MATRIX_WIDTH);
+	framebuffer_write_table(offset,colorcorr_lookup(r), colorcorr_lookup(b), colorcorr_lookup(g));
+}
 
+void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
+	unsigned int offset;
+	if (y >=32 && y < 64) {
+		y+=32;
+	} else if (y >= 64 && y < 96) {
+		y-=32;
+	}
+	offset=x + (y*MATRIX_WIDTH);
+	framebuffer_write_table(offset,colorcorr_lookup(rgb[0]), colorcorr_lookup(rgb[2]), colorcorr_lookup(rgb[1]));
+}
+
+#endif
 #define MIN(a,b) (((a)<(b))?(a):(b))
 uint8_t topcolors[]={
 	255,255,0,
@@ -81,21 +106,18 @@ void testimage_run() {
 	static unsigned int y_treshold=0;
 	static unsigned int j=0;
 	unsigned int x,y;
-	for (x=0; x<MATRIX_WIDTH; x++) {
-		for (y=0; y<MATRIX_HEIGHT; y++) {
-			testimage_set(x,y,0,0,0);
-		}
-	}
+
+	// framebuffer_clean();
 	for (y=0; y<MATRIX_HEIGHT; y++) {
 		for (x=0; x<MATRIX_WIDTH; x++) {
-			// testimage_set(x,y,0,255,0);
-			testimage_setb(x,y,&topcolors[j*3]);
-		}
-		if (y == y_white) {
-			break;
+			if (y == y_white) {
+				testimage_set(x,y,255,255,255);
+			} else {
+				testimage_set(x,y,0,0,0);
+			}
 		}
 	}
-	y_white+=8;
+	y_white+=1;
 	if (y_white >= MATRIX_HEIGHT) {
 		y_white=0;
 		j++;
