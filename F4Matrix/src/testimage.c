@@ -38,24 +38,14 @@ void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
 #else
 void testimage_set(unsigned int x, unsigned int y, uint8_t r, uint8_t g, uint8_t b) {
 	unsigned int offset;
-	if (y >=32 && y < 64) {
-		y+=32;
-	} else if (y >= 64 && y < 96) {
-		y-=32;
-	}
 	offset=x + (y*MATRIX_WIDTH);
-	framebuffer_write_table(offset,colorcorr_lookup(r), colorcorr_lookup(b), colorcorr_lookup(g));
+	framebuffer_write_96x128x5(offset,colorcorr_lookup(r), colorcorr_lookup(b), colorcorr_lookup(g));
 }
 
 void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
 	unsigned int offset;
-	if (y >=32 && y < 64) {
-		y+=32;
-	} else if (y >= 64 && y < 96) {
-		y-=32;
-	}
 	offset=x + (y*MATRIX_WIDTH);
-	framebuffer_write_table(offset,colorcorr_lookup(rgb[0]), colorcorr_lookup(rgb[2]), colorcorr_lookup(rgb[1]));
+	framebuffer_write_96x128x5(offset,colorcorr_lookup(rgb[0]), colorcorr_lookup(rgb[2]), colorcorr_lookup(rgb[1]));
 }
 
 #endif

@@ -7,7 +7,7 @@
 
 
 #include "framebuffer.h"
-#include "offset_table.h"
+#include "offset_table_new.h"
 //Current setup:
 //For each bit
 //	for each row
@@ -45,17 +45,9 @@ void framebuffer_clean() {
 	}
 }
 
-void framebuffer_write_table(unsigned int offset, uint16_t value_r, uint16_t value_g, uint16_t value_b) {
+void framebuffer_write_96x128x5(unsigned int offset, uint16_t value_r, uint16_t value_g, uint16_t value_b) {
 	FRAMEBUFFER_TYPE output_r, output_g, output_b;
-	if (offset < 3072) {
-		output_r = 1;
-		output_g = 2;
-		output_b = 4;
-	} else if (offset < 6144) {
-		output_r = 8;
-		output_g = 16;
-		output_b = 32;
-	} else if (offset < 9216) {
+	if (offset < 6144) {
 		output_r = 1;
 		output_g = 2;
 		output_b = 4;
@@ -64,9 +56,8 @@ void framebuffer_write_table(unsigned int offset, uint16_t value_r, uint16_t val
 		output_g = 16;
 		output_b = 32;
 	}
-	const unsigned int *ptr_flash = &flash_offset_table[0];
-	ptr_flash += offset;
-	unsigned int new_offset = *ptr_flash;
+	unsigned int new_offset;
+	new_offset = flash_offset_table[offset];
 	if (new_offset >= FRAMEBUFFER_LEN){
 		return;
 	}
