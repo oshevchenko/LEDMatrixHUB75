@@ -124,7 +124,7 @@ void matrix_init_data_dma() {
 	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
 	GPIO_Init(GPIO_DATA, &GPIO_InitStructure);
-	GPIOD->ODR=0;
+	GPIO_DATA->ODR=0;
 
 	//Clear flags
 	DMA_ClearFlag(DMA2_Stream5, DMA_FLAG_FEIF5 | DMA_FLAG_DMEIF5 | DMA_FLAG_TEIF5 | DMA_FLAG_HTIF5 | DMA_FLAG_TCIF5);

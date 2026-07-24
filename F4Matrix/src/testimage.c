@@ -39,25 +39,25 @@ void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
 void testimage_set(unsigned int x, unsigned int y, uint8_t r, uint8_t g, uint8_t b) {
 	unsigned int offset;
 	offset=x + (y*MATRIX_WIDTH);
-	framebuffer_write_96x128x5(offset,colorcorr_lookup(r), colorcorr_lookup(b), colorcorr_lookup(g));
+	framebuffer_write_96x128x5(offset,colorcorr_lookup(r), colorcorr_lookup(g), colorcorr_lookup(b));
 }
 
 void testimage_setb(unsigned int x, unsigned int y, uint8_t* rgb) {
 	unsigned int offset;
 	offset=x + (y*MATRIX_WIDTH);
-	framebuffer_write_96x128x5(offset,colorcorr_lookup(rgb[0]), colorcorr_lookup(rgb[2]), colorcorr_lookup(rgb[1]));
+	framebuffer_write_96x128x5(offset,colorcorr_lookup(rgb[0]), colorcorr_lookup(rgb[1]), colorcorr_lookup(rgb[2]));
 }
 
 #endif
 #define MIN(a,b) (((a)<(b))?(a):(b))
 uint8_t topcolors[]={
-	255,255,0,
-	0,255,255,
-	0,255,0,
-	255,0,255,
-	255,0,0,
-	0,0,255,
-	255,255,0,
+	0,   0, 255,
+	0, 255,   0,
+	0, 255, 255,
+	255, 0,   0,
+	255, 0, 255,
+	255,255,  0,
+	255,255,255,
 };
 uint8_t barcolors[]={
 	0,0,255,
@@ -97,13 +97,14 @@ void testimage_run() {
 	static unsigned int j=0;
 	unsigned int x,y;
 
-	// framebuffer_clean();
+	framebuffer_clean();
 	for (y=0; y<MATRIX_HEIGHT; y++) {
 		for (x=0; x<MATRIX_WIDTH; x++) {
 			if (y == y_white) {
-				testimage_set(x,y,255,255,255);
+				// testimage_set(x,y,255,255,255);
+				testimage_setb(x,y,&topcolors[j*3]);
 			} else {
-				testimage_set(x,y,0,0,0);
+				// testimage_set(x,y,0,0,0);
 			}
 		}
 	}
